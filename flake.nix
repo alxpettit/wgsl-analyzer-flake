@@ -17,10 +17,10 @@
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    advisory-db = {
-      url = "github:rustsec/advisory-db";
-      flake = false;
-    };
+    # advisory-db = {
+    #   url = "github:rustsec/advisory-db";
+    #   flake = false;
+    # };
 
     wgsl-analyzer = {
       url = "github:wgsl-analyzer/wgsl-analyzer";
@@ -28,7 +28,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, crane, fenix, flake-utils, advisory-db, wgsl-analyzer, ... }:
+  outputs = { self, nixpkgs, crane, fenix, flake-utils, wgsl-analyzer, ... }:
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs {
