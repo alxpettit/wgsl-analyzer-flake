@@ -46,6 +46,11 @@
         commonArgs = {
           inherit src;
           strictDeps = true;
+          pname = "wgsl-analyzer";
+          # version = craneLib.crateNameFromCargoToml { cargoToml = ./path/to/Cargo.toml; };
+          # everything in wgsl-analyzer is fixed at 0.0.0 except human text
+          # so IDK what to do here
+          version = "0.0.0";
 
           buildInputs = [
             # Add additional build inputs here
@@ -73,17 +78,12 @@
         # Build the actual crate itself, reusing the dependency
         # artifacts from above.
         my-crate = craneLib.buildPackage (commonArgs // {
-          name = "wgsl-analyzer";
           doCheck = false;
           # installPhaseCommand = ''
           #   mkdir -p $out $out/bin
           #   cp target/release/wgsl_analyzer $out/bin/wgsl_analyzer
           #   ln -s $out/bin/wgsl_analyzer $out/bin/wgsl-analyzer
           # '';
-          # version = craneLib.crateNameFromCargoToml { cargoToml = ./path/to/Cargo.toml; };
-          # everything in wgsl-analyzer is fixed at 0.0.0 except human text
-          # so IDK what to do here
-          version = "0.0.0";
           inherit cargoArtifacts;
         });
       in
