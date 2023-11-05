@@ -39,6 +39,7 @@
 
         craneLib = crane.lib.${system};
         src = wgsl-analyzer;
+        # src = "${wgsl-analyzer}/crates/wgsl_analyzer";
         # src = craneLib.cleanCargoSource wgsl-analyzer;
 
         # Common arguments can be set here to avoid repeating them later
@@ -53,6 +54,7 @@
             pkgs.libiconv
           ];
 
+          cargoVendorDir = craneLib.vendorCargoDeps { cargoLock = "${wgsl-analyzer}/Cargo.lock"; };
           # Additional environment variables can be set directly
           # MY_CUSTOM_VAR = "some value";
         };
@@ -71,13 +73,13 @@
         # Build the actual crate itself, reusing the dependency
         # artifacts from above.
         my-crate = craneLib.buildPackage (commonArgs // {
-          pname = "wgsl-analyzer";
+          name = "wgsl-analyzer";
           doCheck = false;
-          installPhaseCommand = ''
-            mkdir -p $out $out/bin
-            cp target/release/wgsl_analyzer $out/bin/wgsl_analyzer
-            ln -s $out/bin/wgsl_analyzer $out/bin/wgsl-analyzer
-          '';
+          # installPhaseCommand = ''
+          #   mkdir -p $out $out/bin
+          #   cp target/release/wgsl_analyzer $out/bin/wgsl_analyzer
+          #   ln -s $out/bin/wgsl_analyzer $out/bin/wgsl-analyzer
+          # '';
           # version = craneLib.crateNameFromCargoToml { cargoToml = ./path/to/Cargo.toml; };
           # everything in wgsl-analyzer is fixed at 0.0.0 except human text
           # so IDK what to do here
@@ -132,7 +134,7 @@
 
         packages = {
           default = my-crate;
-          wgsl-nalyzer = craneLibLLvmTools.cargoLlvmCov (commonArgs // {
+          wgsl-analyzer = craneLibLLvmTools.cargoLlvmCov (commonArgs // {
             inherit cargoArtifacts;
           });
         };
